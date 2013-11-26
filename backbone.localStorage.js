@@ -40,7 +40,7 @@ function guid() {
 // window.Store is deprectated, use Backbone.LocalStorage instead
 Backbone.LocalStorage = window.Store = function(name) {
   if( !this.localStorage ) {
-    throw "Backbone.localStorage: Environment does not support localStorage."
+    throw new Error("Backbone.localStorage: Environment does not support localStorage.");
   }
   this.name = name;
   var store = this.localStorage().getItem(this.name);
@@ -70,13 +70,18 @@ _.extend(Backbone.LocalStorage.prototype, {
   // Update a model by replacing its copy in `this.data`.
   update: function(model) {
     this.localStorage().setItem(this.name+"-"+model.id, JSON.stringify(model));
-    if (!_.include(this.records, model.id.toString()))
-      this.records.push(model.id.toString()); this.save();
+    if (!_.include(this.records, model.id.toString())) {
+      this.records.push(model.id.toString());
+      this.save();
+    }
     return this.find(model);
   },
 
   // Retrieve a model from `this.data` by id.
   find: function(model) {
+    if ( !model.id ) {
+      throw new Error('Backbone.localStorage: Model ID was not defined');
+    }
     return this.jsonData(this.localStorage().getItem(this.name+"-"+model.id));
   },
 
@@ -93,8 +98,9 @@ _.extend(Backbone.LocalStorage.prototype, {
 
   // Delete a model from `this.data`, returning it.
   destroy: function(model) {
-    if (model.isNew())
-      return false
+    if (model.isNew()) {
+      return false;
+    }
     this.localStorage().removeItem(this.name+"-"+model.id);
     this.records = _.reject(this.records, function(id){
       return id === model.id.toString();
@@ -162,10 +168,11 @@ Backbone.LocalStorage.sync = window.Store.sync = Backbone.localSync = function(m
     }
 
   } catch(error) {
-    if (error.code === 22 && store._storageSize() === 0)
+    if (error.code === 22 && store._storageSize() === 0) {
       errorMessage = "Private browsing is unsupported";
-    else
+    } else {
       errorMessage = error.message;
+    }
   }
 
   if (resp) {
@@ -184,20 +191,21 @@ Backbone.LocalStorage.sync = window.Store.sync = Backbone.localSync = function(m
     errorMessage = errorMessage ? errorMessage
                                 : "Record Not Found";
 
-    if (options && options.error)
+    if (options && options.error) {
       if (Backbone.VERSION === "0.9.10") {
         options.error(model, errorMessage, options);
       } else {
         options.error(errorMessage);
       }
-
-    if (syncDfd)
+    }
+    if (syncDfd) {
       syncDfd.reject(errorMessage);
+    }
   }
 
   // add compatibility with $.ajax
   // always execute callback for success and error
-  if (options && options.complete) options.complete(resp);
+  if (options && options.complete) { options.complete(resp); }
 
   return syncDfd && syncDfd.promise();
 };
