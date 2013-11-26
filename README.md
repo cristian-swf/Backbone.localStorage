@@ -1,10 +1,12 @@
-# Backbone localStorage Adapter v1.1.7
+# Backbone localStorage Adapter (forked by unkhz) v1.1.7.1
 
-[![Build Status](https://secure.travis-ci.org/jeromegn/Backbone.localStorage.png?branch=master)](http://travis-ci.org/jeromegn/Backbone.localStorage)
+[![Build Status](https://secure.travis-ci.org/unkhz/Backbone.localStorage.png?branch=master)](http://travis-ci.org/unkhz/Backbone.localStorage)
 
 Quite simply a localStorage adapter for Backbone. It's a drop-in replacement for Backbone.Sync() to handle saving to a localStorage database.
 
-[![Gittip](http://badgr.co/gittip/jeromegn.png)](https://www.gittip.com/jeromegn/)
+## Fork details
+
+I've updated the sync method so that it does not rely on just model.id to distinguish model from collection. Collections can have id:s too. Some lint cleanup as well.
 
 ## Usage
 
@@ -19,11 +21,11 @@ Create your collections like so:
 
 ```javascript
 window.SomeCollection = Backbone.Collection.extend({
-  
+
   localStorage: new Backbone.LocalStorage("SomeCollection"), // Unique name within your app.
-  
+
   // ... everything else is normal.
-  
+
 });
 ```
 ### RequireJS
@@ -34,7 +36,7 @@ Include [RequireJS](http://requirejs.org):
 <script type="text/javascript" src="lib/require.js"></script>
 ```
 
-RequireJS config: 
+RequireJS config:
 ```javascript
 require.config({
     paths: {
@@ -52,7 +54,7 @@ define("someCollection", ["localstorage"], function() {
     var SomeCollection = Backbone.Collection.extend({
         localStorage: new Backbone.LocalStorage("SomeCollection") // Unique name within your app.
     });
-  
+
     return new SomeCollection();
 });
 ```
