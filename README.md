@@ -1,12 +1,13 @@
-# Backbone localStorage Adapter (forked by unkhz) v1.1.7-fork1
-
-[![Build Status](https://secure.travis-ci.org/unkhz/Backbone.localStorage.png?branch=master)](http://travis-ci.org/unkhz/Backbone.localStorage)
+# Backbone localStorage Adapter (fork)
 
 Quite simply a localStorage adapter for Backbone. It's a drop-in replacement for Backbone.Sync() to handle saving to a localStorage database.
 
-## Fork details
+## Fork details 
+- forked by unkhz - v1.1.7-fork1
+  I've updated the sync method so that it does not rely on just model.id to distinguish model from collection. Collections can have id's too. Some lint cleanup as well.
 
-I've updated the sync method so that it does not rely on just model.id to distinguish model from collection. Collections can have id:s too. Some lint cleanup as well.
+- forked by Chris - v1.2.0
+  Updated UnderscoreJS to 1.13.6
 
 ## Usage
 

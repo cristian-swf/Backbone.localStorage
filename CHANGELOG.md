@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.2.0 - October 24, 2013
+- Updated UnderscoreJS version
+
 ## 1.1.7 - October 4, 2013
 
 - Fix CommonJS requiring (Brandon Dimcheff)
